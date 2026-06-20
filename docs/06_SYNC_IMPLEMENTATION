@@ -1,0 +1,132 @@
+# Sync Implementation
+
+## Goal
+
+Fetch data from Football-Data.org and generate local JSON files.
+
+---
+
+# Sync Trigger
+
+Route:
+
+/admin/sync
+
+Button:
+
+Sync Data
+
+No cron jobs.
+
+No background jobs.
+
+---
+
+# Sync Flow
+
+Step 1
+
+Fetch competition data.
+
+Step 2
+
+Fetch teams.
+
+Step 3
+
+Fetch matches.
+
+Step 4
+
+Fetch standings.
+
+Step 5
+
+Normalize all responses.
+
+Step 6
+
+Validate normalized data.
+
+Step 7
+
+Write JSON files.
+
+Step 8
+
+Update metadata.json.
+
+---
+
+# Failure Rules
+
+If any step fails:
+
+- Abort sync
+- Keep previous JSON files
+- Log error
+- Update metadata status
+
+Never write partial data.
+
+---
+
+# Metadata
+
+metadata.json
+
+{
+  "provider": "football-data",
+
+  "lastSync": "",
+
+  "durationMs": 0,
+
+  "status": "success"
+}
+
+---
+
+# Provider Abstraction
+
+Required Interface
+
+interface FootballProvider {
+
+  getCompetition()
+
+  getTeams()
+
+  getMatches()
+
+  getStandings()
+
+}
+
+Required Implementation
+
+FootballDataProvider
+
+The application MUST depend on the interface.
+
+The application MUST NOT depend directly on FootballDataProvider.
+
+---
+
+# Sync Service
+
+Create:
+
+lib/sync/runSync.ts
+
+Responsibilities:
+
+- fetch
+- normalize
+- validate
+- write files
+- update metadata
+
+Single public function:
+
+runSync()

@@ -1,59 +1,48 @@
 # Repository Structure
 
-```text
 worldcup-app/
 │
-├── apps/
-│   ├── web/
-│   │
-│   ├── app/
-│   │   ├── page.tsx
-│   │   ├── standings/
-│   │   ├── matches/
-│   │   ├── simulator/
-│   │   └── bracket/
-│   │
-│   ├── components/
-│   │   ├── standings/
-│   │   ├── matches/
-│   │   ├── simulator/
-│   │   └── bracket/
-│   │
-│   ├── hooks/
-│   │
-│   ├── services/
-│   │
-│   └── types/
+├── app/
 │
+├── components/
 │
-├── apps/api/
-│
-│   ├── cmd/
-│   │   └── main.go
-│
-│   ├── internal/
-│   │
-│   ├── cache/
-│   │
-│   ├── handlers/
-│   │
-│   ├── services/
-│   │
+├── lib/
 │   ├── providers/
-│   │
-│   └── models/
+│   ├── data/
+│   ├── simulator/
+│   └── sync/
 │
+├── data/
 │
-├── shared/
-│
-│   ├── types/
-│   ├── constants/
-│   └── utils/
-│
+├── public/
 │
 ├── docs/
 │
-├── scripts/
-│
-└── README.md
-```
+└── scripts/
+
+---
+
+# Required Directories
+
+app/
+components/
+lib/
+data/
+public/
+docs/
+
+---
+
+# Required Files
+
+data/
+├── competition.json
+├── groups.json
+├── teams.json
+├── matches.json
+├── standings.json
+└── metadata.json
+
+All files must exist.
+
+If data is unavailable, initialize with empty arrays.
