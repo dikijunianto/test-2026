@@ -32,15 +32,15 @@ export function KnockoutStageClient({
 
   const renderBracketRound = (roundName: string, roundMatches: BracketMatch[]) => (
     <div className="flex flex-col gap-4">
-      <div className="text-center text-xs font-bold text-gray-400 mb-2">
+      <div className="text-center text-xs font-bold text-gray-400 dark:text-gray-500 mb-2">
         {roundName}
       </div>
       {roundMatches.map((match) => (
         <div
           key={match.id}
-          className="bg-white rounded-lg shadow p-3 w-48"
+          className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-700/10 p-3 w-48"
         >
-          <div className="text-[10px] text-gray-400 mb-1">
+          <div className="text-[10px] text-gray-400 dark:text-gray-500 mb-1">
             Match {match.matchNumber} - {match.venue}
           </div>
           <div className="space-y-1">
@@ -59,7 +59,7 @@ export function KnockoutStageClient({
                   </span>
                 </div>
                 {match.winnerId === match.homeTeamId && (
-                  <span className="text-[10px] text-green-600 font-bold">✓</span>
+                  <span className="text-[10px] text-green-600 dark:text-green-400 font-bold">✓</span>
                 )}
               </div>
             )}
@@ -78,7 +78,7 @@ export function KnockoutStageClient({
                   </span>
                 </div>
                 {match.winnerId === match.awayTeamId && (
-                  <span className="text-[10px] text-green-600 font-bold">✓</span>
+                  <span className="text-[10px] text-green-600 dark:text-green-400 font-bold">✓</span>
                 )}
               </div>
             )}
@@ -97,8 +97,8 @@ export function KnockoutStageClient({
   return (
     <div>
       {bracketMatches.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-8 text-center">
-          <p className="text-gray-500">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-700/10 p-8 text-center">
+          <p className="text-gray-500 dark:text-gray-400">
             No knockout matches available. Run simulation in Group Stage first.
           </p>
         </div>
@@ -116,21 +116,21 @@ export function KnockoutStageClient({
 
       {selectedTeam && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
             <div className="flex items-center gap-3 mb-4">
               {selectedTeam.crest && (
                 <img src={selectedTeam.crest} alt="" className="w-10 h-10" />
               )}
               <div>
                 <h3 className="font-bold text-lg">{selectedTeam.name}</h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {selectedTeam.code}
                 </p>
               </div>
             </div>
             <button
               onClick={() => setSelectedTeam(null)}
-              className="w-full bg-gray-100 text-gray-700 py-2 rounded-md hover:bg-gray-200"
+              className="w-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
             >
               Close
             </button>

@@ -30,34 +30,34 @@ function TeamRow({
   standing: Standing;
 }) {
   return (
-    <tr className="border-b border-gray-100 last:border-0">
-      <td className="py-2 px-2 text-sm text-gray-500 w-6">{position}</td>
+    <tr className="border-b border-gray-100 dark:border-gray-700 last:border-0">
+      <td className="py-2 px-2 text-sm text-gray-500 dark:text-gray-400 w-6">{position}</td>
       <td className="py-2 px-2">
         <div className="flex items-center gap-2">
           {team?.crest && (
             <img src={team.crest} alt="" className="w-5 h-5" />
           )}
-          <span className="text-sm font-medium text-gray-900 truncate max-w-[100px]">
+          <span className="text-sm font-medium text-gray-900 dark:text-white truncate max-w-[100px]">
             {team?.name ?? "Unknown"}
           </span>
         </div>
       </td>
-      <td className="py-2 px-2 text-sm text-center text-gray-600">
+      <td className="py-2 px-2 text-sm text-center text-gray-600 dark:text-gray-300">
         {standing.played}
       </td>
-      <td className="py-2 px-2 text-sm text-center text-gray-600">
+      <td className="py-2 px-2 text-sm text-center text-gray-600 dark:text-gray-300">
         {standing.wins}
       </td>
-      <td className="py-2 px-2 text-sm text-center text-gray-600">
+      <td className="py-2 px-2 text-sm text-center text-gray-600 dark:text-gray-300">
         {standing.draws}
       </td>
-      <td className="py-2 px-2 text-sm text-center text-gray-600">
+      <td className="py-2 px-2 text-sm text-center text-gray-600 dark:text-gray-300">
         {standing.losses}
       </td>
-      <td className="py-2 px-2 text-sm text-center text-gray-600">
+      <td className="py-2 px-2 text-sm text-center text-gray-600 dark:text-gray-300">
         {standing.goalsFor}
       </td>
-      <td className="py-2 px-2 text-sm text-center text-gray-600">
+      <td className="py-2 px-2 text-sm text-center text-gray-600 dark:text-gray-300">
         {standing.goalsAgainst}
       </td>
     </tr>
@@ -78,8 +78,8 @@ function MatchRow({
   onScoreChange: (matchId: number, homeScore: number, awayScore: number) => void;
 }) {
   return (
-    <tr className="border-b border-gray-100 last:border-0">
-      <td className="py-1.5 px-2 text-[11px] text-gray-400 whitespace-nowrap">
+    <tr className="border-b border-gray-100 dark:border-gray-700 last:border-0">
+      <td className="py-1.5 px-2 text-[11px] text-gray-400 dark:text-gray-500 whitespace-nowrap">
         {formatDate(match.utcDate)}
       </td>
       <td className="py-1.5 px-2">
@@ -87,7 +87,7 @@ function MatchRow({
           {homeTeam?.crest && (
             <img src={homeTeam.crest} alt="" className="w-4 h-4" />
           )}
-          <span className="text-xs text-gray-700 truncate max-w-[80px]">
+          <span className="text-xs text-gray-700 dark:text-gray-300 truncate max-w-[80px]">
             {homeTeam?.name ?? "TBD"}
           </span>
         </div>
@@ -103,9 +103,9 @@ function MatchRow({
               onChange={(e) =>
                 onScoreChange(match.id, parseInt(e.target.value) || 0, match.awayScore ?? 0)
               }
-              className="w-8 h-6 text-center text-xs font-bold border border-gray-300 rounded focus:outline-none focus:border-purple-500"
+              className="w-8 h-6 text-center text-xs font-bold border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:border-purple-500 dark:bg-gray-700 dark:text-white"
             />
-            <span className="text-xs text-gray-400">-</span>
+            <span className="text-xs text-gray-400 dark:text-gray-500">-</span>
             <input
               type="number"
               min={0}
@@ -114,11 +114,11 @@ function MatchRow({
               onChange={(e) =>
                 onScoreChange(match.id, match.homeScore ?? 0, parseInt(e.target.value) || 0)
               }
-              className="w-8 h-6 text-center text-xs font-bold border border-gray-300 rounded focus:outline-none focus:border-purple-500"
+              className="w-8 h-6 text-center text-xs font-bold border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:border-purple-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
         ) : (
-          <span className="text-xs font-bold text-gray-900">
+          <span className="text-xs font-bold text-gray-900 dark:text-white">
             {match.homeScore ?? 0} - {match.awayScore ?? 0}
           </span>
         )}
@@ -128,7 +128,7 @@ function MatchRow({
           {awayTeam?.crest && (
             <img src={awayTeam.crest} alt="" className="w-4 h-4" />
           )}
-          <span className="text-xs text-gray-700 truncate max-w-[80px]">
+          <span className="text-xs text-gray-700 dark:text-gray-300 truncate max-w-[80px]">
             {awayTeam?.name ?? "TBD"}
           </span>
         </div>
@@ -242,7 +242,7 @@ export function StandingsClient({
           return (
             <div
               key={group.code}
-              className="bg-white rounded-lg shadow overflow-hidden"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-700/10 overflow-hidden"
             >
               <div className="bg-purple-600 text-white px-4 py-2">
                 <h3 className="font-bold">Group {group.code}</h3>
@@ -251,15 +251,15 @@ export function StandingsClient({
               <div className="p-3">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="py-1 px-2 text-left text-[10px] text-gray-400 font-medium">#</th>
-                      <th className="py-1 px-2 text-left text-[10px] text-gray-400 font-medium">Team</th>
-                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 font-medium">MP</th>
-                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 font-medium">W</th>
-                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 font-medium">D</th>
-                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 font-medium">L</th>
-                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 font-medium">GF</th>
-                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 font-medium">GA</th>
+                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <th className="py-1 px-2 text-left text-[10px] text-gray-400 dark:text-gray-500 font-medium">#</th>
+                      <th className="py-1 px-2 text-left text-[10px] text-gray-400 dark:text-gray-500 font-medium">Team</th>
+                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 dark:text-gray-500 font-medium">MP</th>
+                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 dark:text-gray-500 font-medium">W</th>
+                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 dark:text-gray-500 font-medium">D</th>
+                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 dark:text-gray-500 font-medium">L</th>
+                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 dark:text-gray-500 font-medium">GF</th>
+                      <th className="py-1 px-2 text-center text-[10px] text-gray-400 dark:text-gray-500 font-medium">GA</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -275,17 +275,17 @@ export function StandingsClient({
                 </table>
               </div>
 
-              <div className="border-t border-gray-100 px-3 py-2">
-                <p className="text-[10px] text-gray-400 mb-1">
+              <div className="border-t border-gray-100 dark:border-gray-700 px-3 py-2">
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 mb-1">
                   Matches - Set scores manually
                 </p>
                 <table className="w-full">
                   <thead>
                     <tr>
-                      <th className="text-left text-[10px] text-gray-400 font-medium w-[90px]"></th>
-                      <th className="text-left text-[10px] text-gray-400 font-medium"></th>
-                      <th className="text-center text-[10px] text-gray-400 font-medium w-20"></th>
-                      <th className="text-left text-[10px] text-gray-400 font-medium"></th>
+                      <th className="text-left text-[10px] text-gray-400 dark:text-gray-500 font-medium w-[90px]"></th>
+                      <th className="text-left text-[10px] text-gray-400 dark:text-gray-500 font-medium"></th>
+                      <th className="text-center text-[10px] text-gray-400 dark:text-gray-500 font-medium w-20"></th>
+                      <th className="text-left text-[10px] text-gray-400 dark:text-gray-500 font-medium"></th>
                     </tr>
                   </thead>
                   <tbody>
