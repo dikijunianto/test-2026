@@ -1,13 +1,15 @@
 // lib/simulator/bracket.ts
-// Knockout bracket generation and management (32-team format)
+// Knockout bracket generation and management (32-team format for 2026 World Cup)
 
 export interface BracketMatch {
   id: string;
+  matchNumber: number;
   round: "roundOf32" | "roundOf16" | "quarterFinal" | "semiFinal" | "final";
   position: number;
   homeTeamId: number | null;
   awayTeamId: number | null;
   winnerId: number | null;
+  venue?: string;
 }
 
 export interface BracketState {
@@ -15,28 +17,26 @@ export interface BracketState {
   champion: number | null;
 }
 
-// 2026 World Cup Round of 32 matchups
-// Top 2 from each group (24) + 8 best 3rd place = 32 teams
+// 2026 World Cup Round of 32 matchups (16 matches)
 const ROUND_OF_32_MATCHUPS = [
-  { homeGroup: "A", homePos: 0, awayGroup: "C", awayPos: 2 },
-  { homeGroup: "B", homePos: 0, awayGroup: "D", awayPos: 2 },
-  { homeGroup: "E", homePos: 0, awayGroup: "G", awayPos: 2 },
-  { homeGroup: "F", homePos: 0, awayGroup: "H", awayPos: 2 },
-  { homeGroup: "I", homePos: 0, awayGroup: "K", awayPos: 2 },
-  { homeGroup: "J", homePos: 0, awayGroup: "L", awayPos: 2 },
-  { homeGroup: "C", homePos: 0, awayGroup: "A", awayPos: 2 },
-  { homeGroup: "D", homePos: 0, awayGroup: "B", awayPos: 2 },
-  { homeGroup: "A", homePos: 1, awayGroup: "B", awayPos: 1 },
-  { homeGroup: "C", homePos: 1, awayGroup: "D", awayPos: 1 },
-  { homeGroup: "E", homePos: 1, awayGroup: "F", awayPos: 1 },
-  { homeGroup: "G", homePos: 1, awayGroup: "H", awayPos: 1 },
-  { homeGroup: "I", homePos: 1, awayGroup: "J", awayPos: 1 },
-  { homeGroup: "K", homePos: 1, awayGroup: "L", awayPos: 1 },
-  { homeGroup: "G", homePos: 0, awayGroup: "E", awayPos: 2 },
-  { homeGroup: "H", homePos: 0, awayGroup: "F", awayPos: 2 },
+  { homeGroup: "A", homePos: 0, awayGroup: "C", awayPos: 2, venue: "Mexico City" },
+  { homeGroup: "B", homePos: 0, awayGroup: "D", awayPos: 2, venue: "Guadalajara" },
+  { homeGroup: "E", homePos: 0, awayGroup: "G", awayPos: 2, venue: "Houston" },
+  { homeGroup: "F", homePos: 0, awayGroup: "H", awayPos: 2, venue: "Dallas" },
+  { homeGroup: "I", homePos: 0, awayGroup: "K", awayPos: 2, venue: "Monterrey" },
+  { homeGroup: "J", homePos: 0, awayGroup: "L", awayPos: 2, venue: "Toronto" },
+  { homeGroup: "C", homePos: 0, awayGroup: "A", awayPos: 2, venue: "New York" },
+  { homeGroup: "D", homePos: 0, awayGroup: "B", awayPos: 2, venue: "Philadelphia" },
+  { homeGroup: "G", homePos: 0, awayGroup: "E", awayPos: 2, venue: "Boston" },
+  { homeGroup: "H", homePos: 0, awayGroup: "F", awayPos: 2, venue: "Atlanta" },
+  { homeGroup: "K", homePos: 0, awayGroup: "I", awayPos: 2, venue: "Miami" },
+  { homeGroup: "L", homePos: 0, awayGroup: "J", awayPos: 2, venue: "Seattle" },
+  { homeGroup: "A", homePos: 1, awayGroup: "B", awayPos: 1, venue: "Los Angeles" },
+  { homeGroup: "C", homePos: 1, awayGroup: "D", awayPos: 1, venue: "San Francisco" },
+  { homeGroup: "E", homePos: 1, awayGroup: "F", awayPos: 1, venue: "Kansas City" },
+  { homeGroup: "G", homePos: 1, awayGroup: "H", awayPos: 1, venue: "Vancouver" },
 ];
 
-// Generate initial bracket from qualified teams
 export function generateBracket(
   qualified: Map<string, number[]>
 ): BracketState {
@@ -49,57 +49,62 @@ export function generateBracket(
     return groupTeams[position] ?? null;
   };
 
-  // Generate Round of 32 matches
   const roundOf32: BracketMatch[] = ROUND_OF_32_MATCHUPS.map(
     (matchup, index) => ({
       id: "r32-" + index,
+      matchNumber: 49 + index,
       round: "roundOf32" as const,
       position: index,
       homeTeamId: getTeamByPosition(matchup.homeGroup, matchup.homePos),
       awayTeamId: getTeamByPosition(matchup.awayGroup, matchup.awayPos),
       winnerId: null,
+      venue: matchup.venue,
     })
   );
 
-  // Generate empty Round of 16 matches
   const roundOf16: BracketMatch[] = Array.from({ length: 8 }, (_, i) => ({
     id: "r16-" + i,
+    matchNumber: 65 + i,
     round: "roundOf16" as const,
     position: i,
     homeTeamId: null,
     awayTeamId: null,
     winnerId: null,
+    venue: ["Los Angeles", "San Francisco", "Houston", "Dallas", "New York", "Philadelphia", "Miami", "Atlanta"][i],
   }));
 
-  // Generate empty Quarter Final matches
   const quarterFinals: BracketMatch[] = Array.from({ length: 4 }, (_, i) => ({
     id: "qf-" + i,
+    matchNumber: 73 + i,
     round: "quarterFinal" as const,
     position: i,
     homeTeamId: null,
     awayTeamId: null,
     winnerId: null,
+    venue: ["Houston", "Philadelphia", "Los Angeles", "San Francisco"][i],
   }));
 
-  // Generate empty Semi Final matches
   const semiFinals: BracketMatch[] = Array.from({ length: 2 }, (_, i) => ({
     id: "sf-" + i,
+    matchNumber: 77 + i,
     round: "semiFinal" as const,
     position: i,
     homeTeamId: null,
     awayTeamId: null,
     winnerId: null,
+    venue: ["Dallas", "Atlanta"][i],
   }));
 
-  // Generate empty Final match
   const final: BracketMatch[] = [
     {
       id: "final-0",
+      matchNumber: 79,
       round: "final" as const,
       position: 0,
       homeTeamId: null,
       awayTeamId: null,
       winnerId: null,
+      venue: "MetLife Stadium, New York",
     },
   ];
 
@@ -115,7 +120,6 @@ export function generateBracket(
   };
 }
 
-// Select winner for a match and propagate to next round
 export function selectWinner(
   state: BracketState,
   matchId: string,
@@ -161,7 +165,6 @@ export function selectWinner(
   };
 }
 
-// Get the next round match for a given match
 function getNextRoundMatch(
   match: BracketMatch
 ): { id: string; slot: "home" | "away" } | null {
@@ -205,7 +208,6 @@ function getNextRoundMatch(
   };
 }
 
-// Reset downstream selections when a team changes
 function resetDownstreamSelections(
   matches: BracketMatch[],
   changedMatch: BracketMatch
@@ -232,7 +234,6 @@ function resetDownstreamSelections(
   }
 }
 
-// Get matches for a specific round
 export function getMatchesForRound(
   state: BracketState,
   round: BracketMatch["round"]
@@ -240,7 +241,6 @@ export function getMatchesForRound(
   return state.matches.filter((m) => m.round === round);
 }
 
-// Check if bracket is complete
 export function isBracketComplete(state: BracketState): boolean {
   return state.champion !== null;
 }
