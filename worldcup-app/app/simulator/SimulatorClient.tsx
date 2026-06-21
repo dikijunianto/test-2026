@@ -1,7 +1,7 @@
 // app/simulator/SimulatorClient.tsx
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import type { Match, Team, Group, Standing } from "@/lib/providers/types";
 import {
   recalculateStandings,
@@ -157,10 +157,10 @@ export function SimulatorClient({
     }
   }, []);
 
-  // Load on mount
-  useState(() => {
+  // Load on mount (client-side only)
+  useEffect(() => {
     loadFromUrl();
-  });
+  }, [loadFromUrl]);
 
   // Render bracket match
   const renderBracketMatch = (match: BracketMatch) => {
