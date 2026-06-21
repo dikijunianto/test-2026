@@ -1,51 +1,23 @@
 // app/standings/page.tsx
-"use client";
-
-import { useState, useEffect } from "react";
 import { readJSON } from "@/lib/data/data-reader";
 import type { Standing, Team, Group, Match } from "@/lib/providers/types";
-import { StandingsClient } from "./StandingsClient";
-import { KnockoutStageClient } from "./KnockoutStageClient";
+import { StandingsPageClient } from "./StandingsPageClient";
+
+export const dynamic = "force-static";
 
 export default function StandingsPage() {
-  const [activeTab, setActiveTab] = useState<"group" | "knockout">("group");
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [standings, setStandings] = useState<Standing[]>([]);
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [matches, setMatches] = useState<Match[]>([]);
-  const [loading, setLoading] = useState(true);
+  let standings: Standing[] = [];
+  let teams: Team[] = [];
+  let groups: Group[] = [];
+  let matches: Match[] = [];
 
-  useEffect(() => {
-    try {
-      const loadedTeams = readJSON<Team[]>("teams.json");
-      const loadedStandings = readJSON<Standing[]>("standings.json");
-      const loadedGroups = readJSON<Group[]>("groups.json");
-      const loadedMatches = readJSON<Match[]>("matches.json");
-
-      setTeams(loadedTeams);
-      setStandings(loadedStandings);
-      setGroups(loadedGroups);
-      setMatches(loadedMatches);
-    } catch {
-      // Data not yet synced
-    } finally {
-      setLoading(false);
-    }
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("tab") === "knockout") {
-      setActiveTab("knockout");
-    }
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="mx-auto max-w-6xl text-center">
-          <p className="text-gray-500">Loading...</p>
-        </div>
-      </div>
-    );
+  try {
+    standings = readJSON<Standing[]>("standings.json");
+    teams = readJSON<Team[]>("teams.json");
+    groups = readJSON<Group[]>("groups.json");
+    matches = readJSON<Match[]>("matches.json");
+  } catch {
+    // Data not yet synced
   }
 
   if (standings.length === 0) {
@@ -70,47 +42,11 @@ export default function StandingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-2 mb-6">
-          <button
-            onClick={() => setActiveTab("group")}
-            className={`px-4 py-2 rounded-md text-sm font-medium ${
-              activeTab === "group"
-                ? "bg-purple-600 text-white"
-                : "bg-white text-gray-600 hover:bg-gray-100"
-            }`}
-          >
-            📊 Group Stage
-          </button>
-          <button
-            onClick={() => setActiveTab("knockout")}
-            className={`px-4 py-2 rounded-md text-sm font-medium ${
-              activeTab === "knockout"
-                ? "bg-purple-600 text-white"
-                : "bg-white text-gray-600 hover:bg-gray-100"
-            }`}
-          >
-            🏆 Knockout Stage
-          </button>
-        </div>
-
-        {activeTab === "group" ? (
-          <StandingsClient
-            groups={groups}
-            standings={standings}
-            teams={teams}
-            matches={matches}
-          />
-        ) : (
-          <KnockoutStageClient
-            standings={standings}
-            teams={teams}
-            groups={groups}
-            matches={matches}
-          />
-        )}
-      </div>
-    </div>
+    <StandingsPageClient
+      standings={standings}
+      teams={teams}
+      groups={groups}
+      matches={matches}
+    />
   );
 }
