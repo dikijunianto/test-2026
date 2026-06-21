@@ -33,6 +33,13 @@ function StatusLabel({ match }: { match: Match }) {
   return <span className="text-xs text-gray-500">{formatDate(match.utcDate)}</span>;
 }
 
+function TeamBadge({ team }: { team: Team | undefined }) {
+  if (team?.crest) {
+    return <img src={team.crest} alt="" className="w-6 h-6" />;
+  }
+  return null;
+}
+
 export default function MatchesPage() {
   let matches: Match[] = [];
   let teams: Team[] = [];
@@ -82,15 +89,14 @@ export default function MatchesPage() {
                   {groupMatches.map((match) => {
                     const homeTeam = teamMap.get(match.homeTeamId);
                     const awayTeam = teamMap.get(match.awayTeamId);
-                    const homeName = getTeamName(homeTeam, match.homeTeamId);
-                    const awayName = getTeamName(awayTeam, match.awayTeamId);
                     return (
                       <div
                         key={match.id}
                         className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
                       >
-                        <div className="flex-1 text-right font-medium">
-                          {homeName}
+                        <div className="flex-1 flex items-center justify-end gap-2 font-medium">
+                          <span>{getTeamName(homeTeam, match.homeTeamId)}</span>
+                          <TeamBadge team={homeTeam} />
                         </div>
                         <div className="px-4 text-center">
                           <span className="text-lg font-bold">
@@ -100,8 +106,9 @@ export default function MatchesPage() {
                             <StatusLabel match={match} />
                           </div>
                         </div>
-                        <div className="flex-1 text-left font-medium">
-                          {awayName}
+                        <div className="flex-1 flex items-center gap-2 font-medium">
+                          <TeamBadge team={awayTeam} />
+                          <span>{getTeamName(awayTeam, match.awayTeamId)}</span>
                         </div>
                       </div>
                     );
