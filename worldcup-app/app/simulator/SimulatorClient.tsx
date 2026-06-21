@@ -183,11 +183,11 @@ export function SimulatorClient({
     return (
       <div
         key={match.id}
-        className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden min-w-[220px]"
+        className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm dark:shadow-gray-700/10 overflow-hidden min-w-[220px]"
       >
         {/* Match Header */}
-        <div className="bg-gray-50 px-3 py-1.5 border-b border-gray-200">
-          <span className="text-xs text-gray-500">
+        <div className="bg-gray-50 dark:bg-gray-700/50 px-3 py-1.5 border-b border-gray-200 dark:border-gray-700">
+          <span className="text-xs text-gray-500 dark:text-gray-400">
             Match {match.matchNumber}
             {match.venue && ` · ${match.venue}`}
           </span>
@@ -201,20 +201,20 @@ export function SimulatorClient({
           disabled={!match.homeTeamId || match.winnerId === match.awayTeamId}
           className={`w-full flex items-center gap-2 px-3 py-2.5 text-left transition-colors ${
             match.winnerId === match.homeTeamId
-              ? "bg-green-50 border-l-4 border-green-500"
+              ? "bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500"
               : match.homeTeamId
-              ? "hover:bg-gray-50 cursor-pointer"
-              : "bg-gray-50"
+              ? "hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
+              : "bg-gray-50 dark:bg-gray-700/50"
           }`}
         >
           <TeamBadge team={homeTeam ?? undefined} size="sm" />
           <span
             className={`flex-1 text-sm ${
               match.winnerId === match.homeTeamId
-                ? "font-bold text-green-700"
+                ? "font-bold text-green-700 dark:text-green-400"
                 : match.homeTeamId
                 ? "font-medium"
-                : "text-gray-400"
+                : "text-gray-400 dark:text-gray-500"
             }`}
           >
             {homeTeam?.name ?? "Awaiting winner"}
@@ -222,7 +222,7 @@ export function SimulatorClient({
         </button>
 
         {/* Divider */}
-        <div className="h-px bg-gray-200" />
+        <div className="h-px bg-gray-200 dark:bg-gray-700" />
 
         {/* Away Team */}
         <button
@@ -232,20 +232,20 @@ export function SimulatorClient({
           disabled={!match.awayTeamId || match.winnerId === match.homeTeamId}
           className={`w-full flex items-center gap-2 px-3 py-2.5 text-left transition-colors ${
             match.winnerId === match.awayTeamId
-              ? "bg-green-50 border-l-4 border-green-500"
+              ? "bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500"
               : match.awayTeamId
-              ? "hover:bg-gray-50 cursor-pointer"
-              : "bg-gray-50"
+              ? "hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
+              : "bg-gray-50 dark:bg-gray-700/50"
           }`}
         >
           <TeamBadge team={awayTeam ?? undefined} size="sm" />
           <span
             className={`flex-1 text-sm ${
               match.winnerId === match.awayTeamId
-                ? "font-bold text-green-700"
+                ? "font-bold text-green-700 dark:text-green-400"
                 : match.awayTeamId
                 ? "font-medium"
-                : "text-gray-400"
+                : "text-gray-400 dark:text-gray-500"
             }`}
           >
             {awayTeam?.name ?? "Awaiting winner"}
@@ -264,19 +264,19 @@ export function SimulatorClient({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Group Stage View */}
         {view === "group" && (
           <div className="space-y-6">
-            <h1 className="text-2xl font-bold text-gray-900">World Cup Simulator</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">World Cup Simulator</h1>
 
             {/* Match Simulator */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-bold mb-4 text-gray-900">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-700/10 p-6">
+              <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
                 Match Simulator
               </h2>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 Edit scores to simulate group stage results
               </p>
               <GroupTabs groups={groups}>
@@ -292,7 +292,7 @@ export function SimulatorClient({
                         return (
                           <div
                             key={match.id}
-                            className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"
+                            className="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
                           >
                             <div className="flex-1 flex items-center justify-end gap-2 font-medium">
                               <span className="text-sm">
@@ -316,9 +316,9 @@ export function SimulatorClient({
                                     e.target.value
                                   )
                                 }
-                                className="w-14 text-center border rounded px-2 py-1.5 text-sm"
+                                className="w-14 text-center border border-gray-300 dark:border-gray-600 rounded px-2 py-1.5 text-sm dark:bg-gray-700 dark:text-white"
                               />
-                              <span className="text-gray-400">-</span>
+                              <span className="text-gray-400 dark:text-gray-500">-</span>
                               <input
                                 type="number"
                                 min="0"
@@ -334,7 +334,7 @@ export function SimulatorClient({
                                     e.target.value
                                   )
                                 }
-                                className="w-14 text-center border rounded px-2 py-1.5 text-sm"
+                                className="w-14 text-center border border-gray-300 dark:border-gray-600 rounded px-2 py-1.5 text-sm dark:bg-gray-700 dark:text-white"
                               />
                             </div>
                             <div className="flex-1 flex items-center gap-2 font-medium">
@@ -353,8 +353,8 @@ export function SimulatorClient({
             </div>
 
             {/* Simulated Standings */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-bold mb-4 text-gray-900">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-700/10 p-6">
+              <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
                 Group Standings
               </h2>
               <GroupTabs groups={groups}>
@@ -381,7 +381,7 @@ export function SimulatorClient({
         {/* Knockout Stage View */}
         {view === "knockout" && (
           <div className="space-y-6">
-            <h1 className="text-2xl font-bold text-gray-900">Knockout Stage</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Knockout Stage</h1>
 
             {/* Champion Display */}
             {bracketState.champion && (
@@ -399,7 +399,7 @@ export function SimulatorClient({
             )}
 
             {/* Bracket Only */}
-            <div className="bg-white rounded-lg shadow p-6 overflow-x-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-700/10 p-6 overflow-x-auto">
               <div className="flex gap-6 min-w-max pb-4">
                 {rounds.map((round) => {
                   const bracketMatches = getMatchesForRound(
@@ -416,7 +416,7 @@ export function SimulatorClient({
                         className={`text-center mb-4 px-4 py-2 rounded-lg ${
                           isFinalRound
                             ? "bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900"
-                            : "bg-purple-100 text-purple-800"
+                            : "bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200"
                         }`}
                       >
                         <h3 className="text-xs font-bold tracking-wider">
@@ -441,7 +441,7 @@ export function SimulatorClient({
             </div>
 
             {/* Instructions */}
-            <div className="bg-purple-50 rounded-lg p-4 text-sm text-purple-800">
+            <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4 text-sm text-purple-800 dark:text-purple-200">
               <p className="font-medium mb-1">How to use:</p>
               <ul className="list-disc list-inside space-y-1">
                 <li>
