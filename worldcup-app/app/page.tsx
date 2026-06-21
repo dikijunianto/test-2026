@@ -23,6 +23,7 @@ export default function HomePage() {
     // No data
   }
 
+  // Sort matches: live first, then scheduled by date, then finished
   const sortedMatches = [...matches].sort((a, b) => {
     const statusOrder = { live: 0, scheduled: 1, finished: 2 };
     const statusDiff = statusOrder[a.status] - statusOrder[b.status];
@@ -31,7 +32,8 @@ export default function HomePage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Hero Section */}
       <div className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="text-center">
@@ -53,6 +55,7 @@ export default function HomePage() {
             )}
           </div>
 
+          {/* Quick Stats */}
           {hasData && (
             <div className="grid grid-cols-3 gap-4 mt-8 max-w-xl mx-auto">
               <div className="bg-white/10 rounded-lg p-4 text-center">
@@ -76,14 +79,14 @@ export default function HomePage() {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         {hasData ? (
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-700/20 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 ⚽ Recent Matches
               </h2>
               <Link
-                href="/standings"
-                className="text-sm text-purple-600 hover:text-purple-800 font-medium"
+                href="/simulator"
+                className="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 font-medium"
               >
                 View Group Stage →
               </Link>
@@ -91,12 +94,13 @@ export default function HomePage() {
             <MatchesTable matches={sortedMatches} teams={teams} limit={15} />
           </div>
         ) : (
+          /* Empty State */
           <div className="text-center py-16">
             <div className="text-6xl mb-4">🏆</div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               Welcome to World Cup Simulator
             </h2>
-            <p className="text-gray-500 mb-6 max-w-md mx-auto">
+            <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md mx-auto">
               Sync data from Football-Data.org to view standings, simulate
               matches, and predict the knockout bracket.
             </p>
@@ -110,6 +114,7 @@ export default function HomePage() {
         )}
       </div>
 
+      {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

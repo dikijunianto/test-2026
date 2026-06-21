@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTheme } from "@/context/ThemeContext";
 
 const navItems = [
   { href: "/", label: "Home", icon: "🏠" },
@@ -12,6 +13,7 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const { isDark, toggle } = useTheme();
 
   return (
     <nav className="bg-gradient-to-r from-indigo-900 to-purple-900 shadow-lg sticky top-0 z-50">
@@ -50,6 +52,15 @@ export function Navbar() {
                 </Link>
               );
             })}
+
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggle}
+              className="ml-2 px-3 py-2 rounded-lg text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white transition-all"
+              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {isDark ? "☀️" : "🌙"}
+            </button>
           </div>
         </div>
       </div>
