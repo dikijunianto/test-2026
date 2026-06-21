@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { href: "/", label: "Home", icon: "🏠" },
-  { href: "/standings", label: "Group Stage", icon: "📊" },
-  { href: "/simulator", label: "Knockout Stage", icon: "🏆" },
+  { href: "/simulator", label: "Group Stage", icon: "📊" },
+  { href: "/simulator?tab=knockout", label: "Knockout Stage", icon: "🏆" },
 ];
 
 export function Navbar() {
@@ -17,6 +17,7 @@ export function Navbar() {
     <nav className="bg-gradient-to-r from-indigo-900 to-purple-900 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <span className="text-2xl">🏆</span>
             <span className="font-bold text-white text-lg hidden sm:inline">
@@ -24,12 +25,16 @@ export function Navbar() {
             </span>
           </Link>
 
+          {/* Tab Navigation */}
           <div className="flex items-center gap-2">
             {navItems.map((item) => {
               const isActive =
                 item.href === "/"
                   ? pathname === "/"
-                  : pathname.startsWith(item.href);
+                  : pathname.startsWith(item.href.split("?")[0]) &&
+                    (item.href.includes("tab=knockout")
+                      ? pathname === "/simulator" && window?.location?.search?.includes("tab=knockout")
+                      : !window?.location?.search?.includes("tab=knockout"));
               return (
                 <Link
                   key={item.href}

@@ -55,7 +55,7 @@ export function SimulatorClient({
   teams,
   groups,
 }: SimulatorClientProps) {
-  const [activeTab, setActiveTab] = useState<"group" | "knockout">("group");
+  const [view, setView] = useState<"group" | "knockout">("group");
   const [predictions, setPredictions] = useState<
     Map<number, { homeScore: number; awayScore: number }>
   >(new Map());
@@ -80,6 +80,16 @@ export function SimulatorClient({
     }
     return state;
   }, [qualification, bracketWinners]);
+
+  // Load view from URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("tab") === "knockout") {
+      setView("knockout");
+    } else {
+      setView("group");
+    }
+  }, []);
 
   // Handle score change
   const handleScoreChange = useCallback(
@@ -255,38 +265,12 @@ export function SimulatorClient({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Tab Switcher */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-1">
-            <button
-              onClick={() => setActiveTab("group")}
-              className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === "group"
-                  ? "border-purple-600 text-purple-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              ⚽ Group Stage
-            </button>
-            <button
-              onClick={() => setActiveTab("knockout")}
-              className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === "knockout"
-                  ? "border-purple-600 text-purple-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              🏆 Knockout Stage
-            </button>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 py-6">
-        {/* Group Stage Tab */}
-        {activeTab === "group" && (
+        {/* Group Stage View */}
+        {view === "group" && (
           <div className="space-y-6">
+            <h1 className="text-2xl font-bold text-gray-900">World Cup Simulator</h1>
+
             {/* Match Simulator */}
             <div className="bg-white rounded-lg shadow p-6">
               <h2 className="text-xl font-bold mb-4 text-gray-900">
@@ -394,9 +378,11 @@ export function SimulatorClient({
           </div>
         )}
 
-        {/* Knockout Stage Tab - Bracket Only */}
-        {activeTab === "knockout" && (
+        {/* Knockout Stage View */}
+        {view === "knockout" && (
           <div className="space-y-6">
+            <h1 className="text-2xl font-bold text-gray-900">Knockout Stage</h1>
+
             {/* Champion Display */}
             {bracketState.champion && (
               <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl p-6 text-center shadow-lg">
@@ -412,7 +398,7 @@ export function SimulatorClient({
               </div>
             )}
 
-            {/* Bracket Only - No Simulator, No Standings */}
+            {/* Bracket Only */}
             <div className="bg-white rounded-lg shadow p-6 overflow-x-auto">
               <div className="flex gap-6 min-w-max pb-4">
                 {rounds.map((round) => {
