@@ -72,28 +72,34 @@ function MatchRow({
   awayTeam: Team | undefined;
 }) {
   return (
-    <div className="flex items-center gap-2 py-1.5 text-xs">
-      <span className="text-gray-400 w-[90px]">{formatDate(match.utcDate)}</span>
-      <div className="flex items-center gap-1 flex-1 justify-end">
-        {homeTeam?.crest && (
-          <img src={homeTeam.crest} alt="" className="w-4 h-4" />
-        )}
-        <span className="text-gray-700 truncate max-w-[80px]">
-          {homeTeam?.name ?? "TBD"}
-        </span>
-      </div>
-      <span className="font-bold text-gray-900 w-12 text-center">
+    <tr className="border-b border-gray-100 last:border-0">
+      <td className="py-1.5 px-2 text-[11px] text-gray-400 whitespace-nowrap">
+        {formatDate(match.utcDate)}
+      </td>
+      <td className="py-1.5 px-2">
+        <div className="flex items-center gap-1.5">
+          {homeTeam?.crest && (
+            <img src={homeTeam.crest} alt="" className="w-4 h-4" />
+          )}
+          <span className="text-xs text-gray-700 truncate max-w-[80px]">
+            {homeTeam?.name ?? "TBD"}
+          </span>
+        </div>
+      </td>
+      <td className="py-1.5 px-2 text-xs font-bold text-gray-900 text-center whitespace-nowrap">
         {match.homeScore ?? 0} - {match.awayScore ?? 0}
-      </span>
-      <div className="flex items-center gap-1 flex-1">
-        {awayTeam?.crest && (
-          <img src={awayTeam.crest} alt="" className="w-4 h-4" />
-        )}
-        <span className="text-gray-700 truncate max-w-[80px]">
-          {awayTeam?.name ?? "TBD"}
-        </span>
-      </div>
-    </div>
+      </td>
+      <td className="py-1.5 px-2">
+        <div className="flex items-center gap-1.5">
+          {awayTeam?.crest && (
+            <img src={awayTeam.crest} alt="" className="w-4 h-4" />
+          )}
+          <span className="text-xs text-gray-700 truncate max-w-[80px]">
+            {awayTeam?.name ?? "TBD"}
+          </span>
+        </div>
+      </td>
+    </tr>
   );
 }
 
@@ -168,16 +174,26 @@ export function StandingsClient({
               <p className="text-[10px] text-gray-400 mb-1">
                 Matches - Set scores manually
               </p>
-              <div className="space-y-0">
-                {groupMatches.map((match) => (
-                  <MatchRow
-                    key={match.id}
-                    match={match}
-                    homeTeam={teamMap.get(match.homeTeamId)}
-                    awayTeam={teamMap.get(match.awayTeamId)}
-                  />
-                ))}
-              </div>
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    <th className="text-left text-[10px] text-gray-400 font-medium w-[90px]"></th>
+                    <th className="text-left text-[10px] text-gray-400 font-medium"></th>
+                    <th className="text-center text-[10px] text-gray-400 font-medium w-12"></th>
+                    <th className="text-left text-[10px] text-gray-400 font-medium"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {groupMatches.map((match) => (
+                    <MatchRow
+                      key={match.id}
+                      match={match}
+                      homeTeam={teamMap.get(match.homeTeamId)}
+                      awayTeam={teamMap.get(match.awayTeamId)}
+                    />
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         );
