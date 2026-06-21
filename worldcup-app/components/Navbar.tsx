@@ -9,7 +9,6 @@ const navItems = [
   { href: "/standings", label: "Standings", icon: "📊" },
   { href: "/matches", label: "Matches", icon: "⚽" },
   { href: "/simulator", label: "Simulator", icon: "⚡" },
-  { href: "/bracket", label: "Bracket", icon: "🏅" },
 ];
 
 export function Navbar() {
